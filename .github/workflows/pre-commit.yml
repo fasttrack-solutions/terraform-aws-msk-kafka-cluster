@@ -18,11 +18,11 @@ jobs:
       directories: ${{ steps.dirs.outputs.directories }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
 
       - name: Get root directories
         id: dirs
-        uses: clowdhaus/terraform-composite-actions/directories@v1.9.0
+        uses: clowdhaus/terraform-composite-actions/directories@ebd493427bf557e70eadc81ecf5a0ef6b0ce5bf9 # v1.9.0
 
   preCommitMinVersions:
     name: Min TF pre-commit
@@ -41,18 +41,18 @@ jobs:
           rm -rf /opt/hostedtoolcache/go
 
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
 
       - name: Terraform min/max versions
         id: minMax
-        uses: clowdhaus/terraform-min-max@v1.3.0
+        uses: clowdhaus/terraform-min-max@5c9cf3d385a6556a7f6487478e9f99204bcee7cc # v1.3.0
         with:
           directory: ${{ matrix.directory }}
 
       - name: Pre-commit Terraform ${{ steps.minMax.outputs.minVersion }}
         # Run only validate pre-commit check on min version supported
         if: ${{ matrix.directory !=  '.' }}
-        uses: clowdhaus/terraform-composite-actions/pre-commit@v1.9.0
+        uses: clowdhaus/terraform-composite-actions/pre-commit@ebd493427bf557e70eadc81ecf5a0ef6b0ce5bf9 # v1.9.0
         with:
           terraform-version: ${{ steps.minMax.outputs.minVersion }}
           tflint-version: ${{ env.TFLINT_VERSION }}
@@ -61,7 +61,7 @@ jobs:
       - name: Pre-commit Terraform ${{ steps.minMax.outputs.minVersion }}
         # Run only validate pre-commit check on min version supported
         if: ${{ matrix.directory ==  '.' }}
-        uses: clowdhaus/terraform-composite-actions/pre-commit@v1.9.0
+        uses: clowdhaus/terraform-composite-actions/pre-commit@ebd493427bf557e70eadc81ecf5a0ef6b0ce5bf9 # v1.9.0
         with:
           terraform-version: ${{ steps.minMax.outputs.minVersion }}
           tflint-version: ${{ env.TFLINT_VERSION }}
@@ -81,17 +81,17 @@ jobs:
           rm -rf /opt/hostedtoolcache/go
 
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
         with:
           ref: ${{ github.event.pull_request.head.ref }}
           repository: ${{github.event.pull_request.head.repo.full_name}}
 
       - name: Terraform min/max versions
         id: minMax
-        uses: clowdhaus/terraform-min-max@v1.3.0
+        uses: clowdhaus/terraform-min-max@5c9cf3d385a6556a7f6487478e9f99204bcee7cc # v1.3.0
 
       - name: Pre-commit Terraform ${{ steps.minMax.outputs.maxVersion }}
-        uses: clowdhaus/terraform-composite-actions/pre-commit@v1.9.0
+        uses: clowdhaus/terraform-composite-actions/pre-commit@ebd493427bf557e70eadc81ecf5a0ef6b0ce5bf9 # v1.9.0
         with:
           terraform-version: ${{ steps.minMax.outputs.maxVersion }}
           tflint-version: ${{ env.TFLINT_VERSION }}
